@@ -41,7 +41,6 @@ const Canvas: FC<CanvasProps> = () => {
       canvasRef.current.height = videoHeight;
 
       const hand = await net.estimateHands(video);
-
       if (hand.length > 0) {
         const ctx = canvasRef?.current?.getContext("2d");
         drawHand(hand, ctx);
@@ -55,13 +54,13 @@ const Canvas: FC<CanvasProps> = () => {
     <section>
       <Webcam
         ref={webcamRef}
-        className="absolute mx-auto top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-9 w-screen h-screen"
+        className="absolute mx-auto top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-9 w-[640px] h-[480px] object-cover"
       />
       <canvas
         ref={canvasRef}
-        className="absolute mx-auto top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 w-screen h-screen"
-        // width="640"
-        // height="480"
+        className="absolute mx-auto top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10"
+        width="640"
+        height="480"
       />
     </section>
   );
