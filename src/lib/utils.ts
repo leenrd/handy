@@ -29,7 +29,7 @@ export const drawHand = (predictions: any[], ctx: CanvasRenderingContext2D) => {
             landmarks[secondJointIndex][0],
             landmarks[secondJointIndex][1]
           );
-          ctx.strokeStyle = "plum";
+          ctx.strokeStyle = "gray";
           ctx.lineWidth = 4;
           ctx.stroke();
         }
@@ -38,8 +38,8 @@ export const drawHand = (predictions: any[], ctx: CanvasRenderingContext2D) => {
       for (let j = 0; j < landmarks.length; j++) {
         const [x, y] = [landmarks[j][0], landmarks[j][1]];
         ctx.beginPath();
-        ctx.arc(x, y, 10, 0, 3 * Math.PI);
-        ctx.fillStyle = "aqua";
+        ctx.arc(x, y, 7, 0, 3 * Math.PI);
+        ctx.fillStyle = "white";
         ctx.fill();
       }
     });
