@@ -16,7 +16,8 @@ const Canvas: FC<CanvasProps> = () => {
     null
   ) as React.MutableRefObject<HTMLCanvasElement>;
 
-  const [gesture, setGesture] = useState(null);
+  const [model, setModel] = useState<boolean>(false);
+  const [gesture, setGesture] = useState<string | null>(null);
   const [emoji, setEmoji] = useState<string | null>(null);
   const images = { thumbs_up: thumbs_up, victory: victory };
 
@@ -26,6 +27,7 @@ const Canvas: FC<CanvasProps> = () => {
 
     const net = await handPose.load();
     console.log("Hand pose model loaded.");
+    setModel(true);
 
     setInterval(() => {
       detect(net);
@@ -56,16 +58,18 @@ const Canvas: FC<CanvasProps> = () => {
           fingerPose.Gestures.ThumbsUpGesture,
         ]);
 
-        const gesture = await GE.estimate(hand[0].landmarks, 8);
+        const gesture = await GE.estimate(hand[0].landmarks, 4);
         if (gesture.gestures !== undefined && gesture.gestures.length > 0) {
+          console.log(gesture.gestures);
           const confidence = gesture.gestures.map(
-            (prediction) => prediction.confidence
+            (prediction) => prediction.score
           );
           const maxConfidence = confidence.indexOf(
             Math.max.apply(null, confidence)
           );
+          console.log(gesture.gestures[maxConfidence].name);
           setEmoji(gesture.gestures[maxConfidence].name);
-          console.log(emoji);
+          setGesture(gesture.gestures[maxConfidence].name);
         }
       }
 
@@ -78,16 +82,48 @@ const Canvas: FC<CanvasProps> = () => {
 
   return (
     <section>
-      <Webcam
-        ref={webcamRef}
-        className="absolute mx-auto top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-9 w-full h-full bg-cover bg-center"
-      />
-      <canvas
-        ref={canvasRef}
-        className="absolute mx-auto top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10"
-        width="640"
-        height="480"
-      />
+      <aside className="bg-white rounded-tr-md rounded-br-md h-screen px-8 w-[20em]">
+        <h1 className="text-2xl font-bold text-center pb-5 pt-10 tracking-tighter">
+          Parameters
+        </h1>
+        <div className="flex flex-col gap-10 mt-9">
+          <p className="font-bold">
+            Hand Recognition Model: {model ? "Active" : "Sleep"}
+          </p>
+          <p className="font-bold">
+            Gesture: {gesture !== null ? gesture : "No gesture detected"}
+          </p>
+        </div>
+      </aside>
+      <div>
+        <Webcam
+          ref={webcamRef}
+          className="absolute mx-auto top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 w-[840px] h-[680px] rounded-2xl"
+        />
+        <canvas
+          ref={canvasRef}
+          className="absolute mx-auto top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10"
+          width="640"
+          height="480"
+        />
+        {emoji !== null ? (
+          <img
+            src={images[emoji]}
+            style={{
+              position: "absolute",
+              marginLeft: "auto",
+              marginRight: "auto",
+              left: 400,
+              bottom: 500,
+              right: 0,
+              textAlign: "center",
+              height: 100,
+            }}
+          />
+        ) : (
+          ""
+        )}
+      </div>
       <div className="absolute top-0 z-[-2] h-screen w-screen bg-[#000000] bg-[radial-gradient(#ffffff33_1px,#00091d_1px)] bg-[size:20px_20px]"></div>
     </section>
   );
