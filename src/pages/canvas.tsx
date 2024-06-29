@@ -7,6 +7,7 @@ import { drawHand } from "../lib/utils";
 
 import victory from "/victory.png";
 import thumbs_up from "/thumbs_up.png";
+import { Link } from "react-router-dom";
 
 interface CanvasProps {}
 
@@ -16,6 +17,7 @@ const Canvas: FC<CanvasProps> = () => {
     null
   ) as React.MutableRefObject<HTMLCanvasElement>;
 
+  const [onCamera, setOnCamera] = useState<boolean>(false);
   const [model, setModel] = useState<boolean>(false);
   const [gesture, setGesture] = useState<string | null>(null);
   const [emoji, setEmoji] = useState<string | null>(null);
@@ -82,23 +84,53 @@ const Canvas: FC<CanvasProps> = () => {
 
   return (
     <section>
-      <aside className="bg-white rounded-tr-md rounded-br-md h-screen px-8 w-[20em]">
-        <h1 className="text-2xl font-bold text-center pb-5 pt-10 tracking-tighter">
-          Parameters
+      <aside className="bg-white rounded-tr-md mt-10 rounded-br-md h-fit py-5 px-8 w-[20em]">
+        <div>
+          <img className="scale-75" src="/512.gif" alt="" />
+        </div>
+        <h1 className="text-2xl font-bold text-center pb-5 tracking-tighter">
+          Model Observing...
         </h1>
-        <div className="flex flex-col gap-10 mt-9">
+        <div className="flex flex-col gap-4 p-7 mt-9 border rounded-md tracking-tighter">
           <p className="font-bold">
-            Hand Recognition Model: {model ? "Active" : "Sleep"}
+            Recognition Model:{" "}
+            <span className={`${model ? "text-green-500" : "text-red-500"}`}>
+              {model ? "Active" : "Sleep"}
+            </span>
           </p>
           <p className="font-bold">
-            Gesture: {gesture !== null ? gesture : "No gesture detected"}
+            Gesture:{" "}
+            <span
+              className={`${
+                gesture !== null ? "text-green-500" : "text-red-500"
+              }`}
+            >
+              {gesture !== null ? gesture : "No gesture detected"}
+            </span>
           </p>
+        </div>
+        <div>
+          <button
+            onClick={() => {
+              setOnCamera((prev) => !prev);
+            }}
+            className={`${
+              onCamera ? "bg-[#00091d]" : "bg-red-500"
+            } text-white w-full font-bold py-2 px-4 border rounded tracking-tighter mt-5`}
+          >
+            {onCamera ? "On Camera" : "Off Camera"}
+          </button>
+          <button className="text-black w-full font-bold py-2 px-4 border rounded tracking-tighter mt-5">
+            <Link to="/">Go to Home</Link>
+          </button>
         </div>
       </aside>
       <div>
         <Webcam
           ref={webcamRef}
-          className="absolute mx-auto top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 w-[840px] h-[680px] rounded-2xl"
+          className={`${
+            onCamera ? "w-[940px] h-[680px]" : "w-[1px] h-[1px]"
+          } absolute mx-auto top-1/2 right-auto transform translate-x-1/2 -translate-y-1/2 z-10 rounded`}
         />
         <canvas
           ref={canvasRef}
