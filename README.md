@@ -1,2 +1,5 @@
-![Screenshot 2024-06-28 221342](https://github.com/leenrd/handy/assets/103997539/bae295ac-5daa-4cca-a99d-ba554efab97e)
-![Screenshot 2024-06-28 222456](https://github.com/leenrd/handy/assets/103997539/2b199d6e-deac-4493-aae1-4ed56b7482d9)
+### Hand gesture classifier
+
+![Screenshot 2024-06-29 162747](https://github.com/leenrd/handy/assets/103997539/1fa96c55-d2ff-4771-b9df-2d65ac5ae326)
+![Screenshot 2024-06-29 164842](https://github.com/leenrd/handy/assets/103997539/da5cdfdb-e40e-4361-aded-cd9ef7416ae9)
+![Screenshot 2024-06-29 164855](https://github.com/leenrd/handy/assets/103997539/bad72bc5-a2f5-4a96-8b52-66ac511f67e2)
